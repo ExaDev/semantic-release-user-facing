@@ -1,5 +1,7 @@
 # semantic-release-user-facing
 
+[![GitHub](https://img.shields.io/badge/GitHub-181717?logo=github&logoColor=white)](https://github.com/ExaDev/semantic-release-user-facing) [![npm](https://img.shields.io/badge/npm-CB3837?logo=npm&logoColor=white)](https://www.npmjs.com/package/semantic-release-user-facing) [![Release](https://img.shields.io/github/v/release/ExaDev/semantic-release-user-facing)](https://github.com/ExaDev/semantic-release-user-facing/releases/latest) [![CI](https://img.shields.io/github/actions/workflow/status/ExaDev/semantic-release-user-facing/ci.yml?branch=main)](https://github.com/ExaDev/semantic-release-user-facing/actions)
+
 [semantic-release](https://github.com/semantic-release/semantic-release) plugins that decide what a release contains from what a commit changed, not only from its message. A `feat:` that touches nothing but tests, CI or documentation no longer cuts a release or appears in the changelog.
 
 The package has two entry points, each a drop-in superset of a stock plugin:
