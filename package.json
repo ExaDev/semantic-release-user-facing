@@ -1,7 +1,7 @@
 {
   "name": "semantic-release-user-facing",
   "description": "semantic-release commit analyzer and release notes generator that ignore commits changing nothing user-facing",
-  "version": "0.0.0-development",
+  "version": "1.0.0",
   "dependencies": {
     "@semantic-release/commit-analyzer": "13.0.1",
     "@semantic-release/release-notes-generator": "14.1.1",
