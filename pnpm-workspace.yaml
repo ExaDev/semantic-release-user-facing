@@ -5,3 +5,6 @@ saveExact: true
 # typed-rest-client (via Stryker) pins a qs release with an open advisory; patched in 6.15.2.
 overrides:
   qs: 6.15.2
+# Stopgap until stryker-js ships a fix for stryker-mutator/stryker-js#6210: on Vitest 5 the runner's per-test name filter joins suite names with a space where Vitest joins them with ' > ', so no covered mutant inside a describe block is ever killed. Drop this patch when a release contains the fix.
+patchedDependencies:
+  '@stryker-mutator/vitest-runner@10.0.0': patches/@stryker-mutator__vitest-runner@10.0.0.patch

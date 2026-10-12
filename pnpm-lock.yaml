@@ -165,6 +165,9 @@ settings:
 overrides:
   qs: 6.15.2
 
+patchedDependencies:
+  '@stryker-mutator/vitest-runner@10.0.0': d80ad5326a59a72907b0e1c70cfd8b922ab3b6461e40c161c01c597095589c9b
+
 importers:
 
   .:
@@ -214,7 +217,7 @@ importers:
         version: 10.0.0(@stryker-mutator/core@10.0.0(@types/node@26.6.5))(typescript@6.0.3)
       '@stryker-mutator/vitest-runner':
         specifier: 10.0.0
-        version: 10.0.0(@stryker-mutator/core@10.0.0(@types/node@26.6.5))(vitest@5.0.3)
+        version: 10.0.0(patch_hash=d80ad5326a59a72907b0e1c70cfd8b922ab3b6461e40c161c01c597095589c9b)(@stryker-mutator/core@10.0.0(@types/node@26.6.5))(vitest@5.0.3)
       '@types/node':
         specifier: 26.6.5
         version: 26.6.5
@@ -4436,7 +4439,7 @@ snapshots:
 
   '@stryker-mutator/util@10.0.0': {}
 
-  '@stryker-mutator/vitest-runner@10.0.0(@stryker-mutator/core@10.0.0(@types/node@26.6.5))(vitest@5.0.3)':
+  '@stryker-mutator/vitest-runner@10.0.0(patch_hash=d80ad5326a59a72907b0e1c70cfd8b922ab3b6461e40c161c01c597095589c9b)(@stryker-mutator/core@10.0.0(@types/node@26.6.5))(vitest@5.0.3)':
     dependencies:
       '@stryker-mutator/api': 10.0.0
       '@stryker-mutator/core': 10.0.0(@types/node@26.6.5)
