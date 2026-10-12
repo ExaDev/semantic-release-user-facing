@@ -1,0 +1,13 @@
+node_modules/
+dist/
+*.tsbuildinfo
+.DS_Store
+coverage/
+.eslintcache
+.turbo/
+reports/
+.stryker-tmp/
+
+# The instruction files are tracked symlinks to README.md; a global ignore may otherwise exclude them.
+!CLAUDE.md
+!AGENTS.md

@@ -1,0 +1,103 @@
+{
+  "name": "semantic-release-user-facing",
+  "description": "semantic-release commit analyzer and release notes generator that ignore commits changing nothing user-facing",
+  "version": "0.0.0-development",
+  "dependencies": {
+    "@semantic-release/commit-analyzer": "13.0.1",
+    "@semantic-release/release-notes-generator": "14.1.1",
+    "picomatch": "4.0.7",
+    "zod": "4.6.5"
+  },
+  "devDependencies": {
+    "@arethetypeswrong/cli": "0.18.5",
+    "@commitlint/cli": "21.2.3",
+    "@commitlint/config-conventional": "21.2.3",
+    "@eslint/js": "10.0.1",
+    "@exadev/eslint-config": "3.1.0",
+    "@semantic-release/changelog": "7.0.0",
+    "@semantic-release/git": "11.0.1",
+    "@stryker-mutator/api": "10.0.0",
+    "@stryker-mutator/core": "10.0.0",
+    "@stryker-mutator/typescript-checker": "10.0.0",
+    "@stryker-mutator/vitest-runner": "10.0.0",
+    "@types/node": "26.6.5",
+    "@types/picomatch": "4.0.3",
+    "@types/signale": "1.4.7",
+    "@vitest/coverage-v8": "5.0.3",
+    "eslint": "10.12.0",
+    "husky": "9.1.7",
+    "lint-staged": "17.6.0",
+    "publint": "0.3.25",
+    "semantic-release": "25.0.9",
+    "tsdown": "0.23.1",
+    "typescript": "6.0.3",
+    "typescript-eslint": "8.71.1",
+    "vitest": "5.0.3"
+  },
+  "engines": {
+    "node": ">=22.14"
+  },
+  "exports": {
+    ".": {
+      "types": {
+        "import": "./dist/index.d.ts",
+        "require": "./dist/index.d.cts"
+      },
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
+    "./notes": {
+      "types": {
+        "import": "./dist/notes.d.ts",
+        "require": "./dist/notes.d.cts"
+      },
+      "import": "./dist/notes.js",
+      "require": "./dist/notes.cjs"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "keywords": [
+    "commit-analyzer",
+    "monorepo",
+    "release-notes",
+    "semantic-release",
+    "semantic-release-plugin"
+  ],
+  "license": "MIT",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "peerDependencies": {
+    "semantic-release": "^24.0.0 || ^25.0.0"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ExaDev/semantic-release-user-facing.git"
+  },
+  "scripts": {
+    "build": "tsdown",
+    "lint": "eslint . --fix --cache --max-warnings 0",
+    "lint:check": "eslint . --cache --max-warnings 0",
+    "prepare": "husky",
+    "prepublishOnly": "pnpm run lint:check && pnpm run typecheck && pnpm run test && tsdown && publint && attw --pack",
+    "release": "semantic-release",
+    "test": "vitest run",
+    "test:mutation": "stryker run stryker.config.ts",
+    "typecheck": "tsc -p tsconfig.json"
+  },
+  "sideEffects": false,
+  "type": "module",
+  "types": "./dist/index.d.ts",
+  "typesVersions": {
+    "*": {
+      "notes": [
+        "./dist/notes.d.ts"
+      ]
+    }
+  }
+}
