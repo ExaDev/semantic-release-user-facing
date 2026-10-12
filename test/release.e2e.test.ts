@@ -92,7 +92,8 @@ describe('a semantic-release dry run with both entry points', () => {
   it('ignores a breaking commit that touches only documentation', async () => {
     const { repo, remote } = await setup();
     await repo.write('README.md', 'changed');
-    await repo.commit('feat!: rewrite the docs');
+    // A footer, not `feat!`: the default angular preset does not read the `!` marker, so that form would release nothing with or without the filter.
+    await repo.commit('feat: rewrite the docs\n\nBREAKING CHANGE: the docs are different');
 
     expect(await dryRun(repo, remote)).toBe(false);
   });
