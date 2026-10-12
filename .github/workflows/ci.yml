@@ -234,6 +234,8 @@ jobs:
           cache: pnpm
           # registry-url is deliberately absent: setup-node would otherwise write an .npmrc _authToken line that wins over the OIDC token exchange, breaking trusted publishing.
       - run: pnpm install --frozen-lockfile
+      # The release configuration loads this package's own entry points from dist.
+      - run: pnpm build
       # Pinned to an explicit release rather than npm@latest, so a newly published (or compromised) latest never runs in the job that holds the OIDC token. Trusted publishing needs npm CLI >=11.5.1; raise the pin deliberately, choosing a release that is at least a week old.
       - name: Upgrade npm for OIDC trusted publishing (needs npm CLI >=11.5.1)
         # zizmor's adhoc-packages audit flags any install outside a lockfile; this one is a single exact version, chosen and raised deliberately as the comment above says, so it is ignored here rather than in the whole repository.

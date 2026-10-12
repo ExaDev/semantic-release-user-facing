@@ -25,6 +25,11 @@ export const commitTypes: readonly CommitType[] = [
 ];
 
 /**
+ * Repository files that are not part of the published package and that the built-in non-shipping defaults do not cover: pnpm's settings and the patch files it applies to dev tooling.
+ */
+const userFacing = { include: [], exclude: ['patches/**', 'pnpm-workspace.yaml'] };
+
+/**
  * Runs on `main`. Analyses commits since the last tag, bumps the version, publishes to npmjs.org through trusted OIDC publishing (no stored token, see .github/workflows/ci.yml), creates a versioned tag and GitHub Release with generated notes, and commits CHANGELOG.md and package.json back to main.
  */
 const config: Options = {
@@ -33,17 +38,20 @@ const config: Options = {
   repositoryUrl: 'git@github.com:ExaDev/semantic-release-user-facing.git',
   plugins: [
     [
-      '@semantic-release/commit-analyzer',
+      // This package's own entry points, loaded from the build the Release job produces, so a commit that changes nothing a consumer can observe (tests, tooling, documentation) never triggers a release of this package.
+      './dist/index.js',
       {
         preset: 'conventionalcommits',
         releaseRules: [{ breaking: true, release: 'major' }, ...commitTypes.map((t) => ({ type: t.type, release: t.release }))],
+        userFacing,
       },
     ],
     [
-      '@semantic-release/release-notes-generator',
+      './dist/notes.js',
       {
         // Deliberately angular, not conventionalcommits: conventional-changelog-writer's bundled commit partial does not match the conventionalcommits preset's function-based partial signature, producing a changelog with a version header and nothing under it.
         preset: 'angular',
+        userFacing,
       },
     ],
     '@semantic-release/changelog',
