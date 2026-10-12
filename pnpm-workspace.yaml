@@ -2,3 +2,6 @@
 packages: []
 # Every dependency add or update writes an exact version, never a range: a floating range lets a routine `pnpm install` silently resolve to a version nobody has reviewed.
 saveExact: true
+# typed-rest-client (via Stryker) pins a qs release with an open advisory; patched in 6.15.2.
+overrides:
+  qs: 6.15.2
