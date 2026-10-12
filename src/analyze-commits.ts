@@ -5,12 +5,19 @@ import { createGitReader } from './git.js';
 import { readPluginConfig } from './options.js';
 
 /**
+ * What this plugin reads from semantic-release's analyze-commits context. The full context satisfies it.
+ */
+export type AnalyzeCommitsInput = Pick<AnalyzeCommitsContext, 'commits' | 'cwd' | 'env'> & {
+  readonly logger: Pick<AnalyzeCommitsContext['logger'], 'log'>;
+};
+
+/**
  * Drop-in superset of `@semantic-release/commit-analyzer`: the stock analyzer's own options are accepted unchanged, plus `userFacing: { include, exclude }`. Commits that change nothing user-facing are removed before the stock analyzer sees them, so they cannot trigger a release whatever their type.
  * @param pluginConfig - The stock analyzer's options plus the optional `userFacing` overrides.
- * @param context - The semantic-release analyze-commits context.
+ * @param context - The semantic-release analyze-commits context; only `commits`, `cwd`, `env` and `logger.log` are read.
  * @returns The stock analyzer's release type for the remaining commits, or `null` when none triggers a release.
  */
-export async function analyzeCommits(pluginConfig: unknown, context: AnalyzeCommitsContext): Promise<ReleaseType | null> {
+export async function analyzeCommits(pluginConfig: unknown, context: AnalyzeCommitsInput): Promise<ReleaseType | null> {
   const { rules, delegated } = readPluginConfig(pluginConfig);
   const reader = createGitReader({ cwd: context.cwd, env: context.env });
   const commits = await filterUserFacingCommits(context.commits, rules, reader);

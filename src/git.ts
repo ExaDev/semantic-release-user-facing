@@ -56,8 +56,10 @@ export function parseNameStatus(output: string): readonly FileChange[] {
 
 /**
  * Runs tasks with at most `max` in flight, so classifying a long history never starts more git processes than the machine has cores.
+ * @param max - The most tasks that may run at once; later tasks start in arrival order as running ones finish.
+ * @returns A function that runs a task under the limit and settles with the task's own outcome.
  */
-function createLimiter(max: number): <T>(task: () => Promise<T>) => Promise<T> {
+export function createLimiter(max: number): <T>(task: () => Promise<T>) => Promise<T> {
   let active = 0;
   const waiting: (() => void)[] = [];
 

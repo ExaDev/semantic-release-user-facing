@@ -18,6 +18,23 @@ export function cleanGitEnvironment(): Record<string, string> {
   return env;
 }
 
+/**
+ * A commit in the shape semantic-release hands to a plugin, with the fields a test does not care about left empty.
+ */
+export function commitFixture(hash: string, { short = hash, message = 'chore: fixture' }: { short?: string; message?: string } = {}): Commit {
+  return {
+    commit: { long: hash, short },
+    tree: { long: '', short: '' },
+    author: { name: 'Test', email: 'test@example.com', short: '' },
+    committer: { name: 'Test', email: 'test@example.com', short: '' },
+    subject: message.split('\n')[0] ?? '',
+    body: '',
+    message,
+    hash,
+    committerDate: '',
+  };
+}
+
 export interface TestRepo {
   readonly directory: string;
   readonly env: Record<string, string>;
@@ -73,17 +90,7 @@ export async function createTestRepo(): Promise<TestRepo> {
       const message = await git('log', '-1', '--format=%B', hash);
       const short = await git('rev-parse', '--short', hash);
 
-      return {
-        commit: { long: hash, short },
-        tree: { long: '', short: '' },
-        author: { name: 'Test', email: 'test@example.com', short: '' },
-        committer: { name: 'Test', email: 'test@example.com', short: '' },
-        subject: message.split('\n')[0] ?? '',
-        body: '',
-        message,
-        hash,
-        committerDate: '',
-      };
+      return commitFixture(hash, { short, message });
     },
     async dispose() {
       await rm(directory, { recursive: true, force: true });

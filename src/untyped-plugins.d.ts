@@ -3,9 +3,10 @@
 declare module '@semantic-release/commit-analyzer' {
   import type { AnalyzeCommitsContext, ReleaseType } from 'semantic-release';
 
+  // Narrowed to what the analyzer reads from the context (`commits`, `cwd` and `logger.log`), so a caller needs no more than that.
   export function analyzeCommits(
     pluginConfig: Readonly<Record<string, unknown>>,
-    context: AnalyzeCommitsContext,
+    context: Pick<AnalyzeCommitsContext, 'commits' | 'cwd'> & { readonly logger: Pick<AnalyzeCommitsContext['logger'], 'log'> },
   ): Promise<ReleaseType | null>;
 }
 

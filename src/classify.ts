@@ -48,10 +48,10 @@ export function createPathClassifier(rules: UserFacingRules): (path: string) => 
   const nonShipping = picomatch([...nonShippingGlobs], options);
 
   return (path) => {
-    if (rules.include.length > 0 && included(path)) {
+    if (included(path)) {
       return 'user-facing';
     }
-    if (rules.exclude.length > 0 && excluded(path)) {
+    if (excluded(path)) {
       return 'non-user-facing';
     }
     if (nonShipping(path)) {

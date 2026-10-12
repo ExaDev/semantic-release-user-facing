@@ -54,3 +54,37 @@ describe('manifestChangeIsUserFacing', () => {
     expect(manifestChangeIsUserFacing({}, { [field]: 'changed' })).toBe(true);
   });
 });
+
+describe('manifestChangeIsUserFacing per consumer-facing field', () => {
+  // Written out here, not derived from the module's own list, so a field dropped or renamed there fails.
+  const expectedFields = [
+    'dependencies',
+    'peerDependencies',
+    'peerDependenciesMeta',
+    'optionalDependencies',
+    'bundleDependencies',
+    'bundledDependencies',
+    'bin',
+    'exports',
+    'imports',
+    'main',
+    'module',
+    'types',
+    'typings',
+    'browser',
+    'files',
+    'engines',
+    'type',
+    'sideEffects',
+    'os',
+    'cpu',
+  ];
+
+  it.each(expectedFields)('is true when %s changes', (field) => {
+    expect(manifestChangeIsUserFacing({ [field]: 'old' }, { [field]: 'new' })).toBe(true);
+  });
+
+  it('tracks exactly those fields', () => {
+    expect([...consumerFacingManifestFields].sort()).toEqual([...expectedFields].sort());
+  });
+});
