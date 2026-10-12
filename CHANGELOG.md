@@ -1,3 +1,5 @@
+## [1.0.1](https://github.com/ExaDev/semantic-release-user-facing/compare/v1.0.0...v1.0.1) (2026-10-12)
+
 # 1.0.0 (2026-10-12)
 
 
