@@ -1,5 +1,9 @@
 ## [1.0.1](https://github.com/ExaDev/semantic-release-user-facing/compare/v1.0.0...v1.0.1) (2026-10-12)
 
+### Tests
+
+* kill the surviving mutants found by a working mutation run ([c32758c](https://github.com/ExaDev/semantic-release-user-facing/commit/c32758c9d088a3077efaa40a2c6d3840871bc68c))
+
 # 1.0.0 (2026-10-12)
 
 
