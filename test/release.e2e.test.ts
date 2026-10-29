@@ -1,7 +1,7 @@
 import { join } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import semanticRelease from 'semantic-release';
-import { afterEach, describe, expect, it } from 'vitest';
+import { afterAll, afterEach, beforeAll, describe, expect, it } from 'vitest';
 import { createTestRepo, type TestRepo } from './helpers/repo.js';
 
 const distribution = join(import.meta.dirname, '..', 'dist');
@@ -44,6 +44,23 @@ async function dryRun(repo: TestRepo, remote: TestRepo, pluginOptions: Record<st
 
 describe('a semantic-release dry run with both entry points', () => {
   const repos: TestRepo[] = [];
+  const hookEnvironment = new Map<string, string>();
+
+  // semantic-release runs git through execa, which merges the process environment over the `env` passed in the context, so a `GIT_DIR` set by the pre-push hook would send its fetches to the outer repository. The variables are removed from the process for this suite and restored afterwards.
+  beforeAll(() => {
+    for (const [key, value] of Object.entries(process.env)) {
+      if (key.startsWith('GIT_') && value !== undefined) {
+        hookEnvironment.set(key, value);
+        Reflect.deleteProperty(process.env, key);
+      }
+    }
+  });
+
+  afterAll(() => {
+    for (const [key, value] of hookEnvironment) {
+      process.env[key] = value;
+    }
+  });
 
   afterEach(async () => {
     await Promise.all(repos.splice(0).map(async (repo) => repo.dispose()));
