@@ -39,6 +39,8 @@ const config: Options = {
 export default config;
 ```
 
+The notes entry lists only what its preset lists: `angular` lists `feat`, `fix`, `perf` and `revert`, so a release cut by a `docs`, `refactor` or `chore` commit would have a version header and nothing under it. To list every type that can trigger a release, use `conventionalcommits` and give `presetConfig.types` a section for each type, with `conventional-changelog-conventionalcommits` installed at 9.x (`@semantic-release/release-notes-generator` loads `conventional-changelog-writer` 8, which cannot render the 10.x preset). [`release.config.ts`](https://github.com/ExaDev/semantic-release-user-facing/blob/main/release.config.ts) in this repository does this, deriving the types from the same list as its commit analyzer rules.
+
 `@semantic-release/changelog` and `@semantic-release/github` read the notes the second entry point produces, so the changelog and the GitHub release body follow it. The two entry points are configured independently: a documentation commit can stay out of the release trigger yet appear in the notes by giving only the notes entry an `include` for it.
 
 ## What counts as user-facing
