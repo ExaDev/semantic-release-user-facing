@@ -8,3 +8,8 @@ overrides:
 # Stopgap until stryker-js ships a fix for stryker-mutator/stryker-js#6210: on Vitest 5 the runner's per-test name filter joins suite names with a space where Vitest joins them with ' > ', so no covered mutant inside a describe block is ever killed. Drop this patch when a release contains the fix.
 patchedDependencies:
   '@stryker-mutator/vitest-runner@10.0.0': patches/@stryker-mutator__vitest-runner@10.0.0.patch
+# release-notes-generator resolves the preset it is configured with from its own location first, which under pnpm's isolated layout reaches the 10.x copy hoisted from @commitlint/config-conventional, not the 9.x pin in package.json. 10.x needs conventional-changelog-writer 9 and the generator loads writer 8, so it renders no notes. Declaring the dependency here makes the generator's own node_modules hold 9.x.
+packageExtensions:
+  '@semantic-release/release-notes-generator':
+    dependencies:
+      conventional-changelog-conventionalcommits: 9.3.1
