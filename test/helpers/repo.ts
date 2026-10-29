@@ -5,12 +5,15 @@ import { dirname, join } from 'node:path';
 import type { Commit } from 'semantic-release';
 
 /**
- * The environment a git child process gets: the parent's, minus every `GIT_*` variable. A hook or an outer repository sets `GIT_DIR`, `GIT_WORK_TREE` and `GIT_INDEX_FILE`, and a fixture's git commands would otherwise act on that repository.
+ * The variables a fixture's git and semantic-release processes keep from the parent: where to find programs, the home directory and the locale. Nothing else is inherited, so no outer repository (`GIT_DIR`, `GIT_WORK_TREE`, `GIT_INDEX_FILE` from a hook) and no CI service (a pull request run's `GITHUB_REF` and `GITHUB_ACTIONS`, which make semantic-release believe the fixture is on the branch `refs/pull/N/merge` and refuse to release) leaks into a fixture.
  */
-export function cleanGitEnvironment(): Record<string, string> {
+const inheritedVariables: readonly string[] = ['PATH', 'HOME', 'TMPDIR', 'LANG', 'LC_ALL', 'LC_CTYPE'];
+
+export function fixtureEnvironment(): Record<string, string> {
   const env: Record<string, string> = {};
-  for (const [key, value] of Object.entries(process.env)) {
-    if (value !== undefined && !key.startsWith('GIT_')) {
+  for (const key of inheritedVariables) {
+    const value = process.env[key];
+    if (value !== undefined) {
       env[key] = value;
     }
   }
@@ -52,7 +55,7 @@ export interface TestRepo {
  */
 export async function createTestRepo(): Promise<TestRepo> {
   const directory = await mkdtemp(join(tmpdir(), 'user-facing-'));
-  const env = cleanGitEnvironment();
+  const env = fixtureEnvironment();
   const git = async (...args: readonly string[]): Promise<string> =>
     new Promise<string>((resolve, reject) => {
       execFile('git', args, { cwd: directory, env, encoding: 'utf8' }, (error, stdout) => {
